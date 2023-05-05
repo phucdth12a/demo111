@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:black_hole/custom_widget.dart/horizontal_albumlist_separated.dart';
+import 'package:black_hole/helpers/extensions.dart';
 import 'package:black_hole/screens/home/home_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -225,7 +226,7 @@ class HomeScreen extends GetView<HomeController> {
                 if (controller.lists[index] == 'likedArtists') {
                   return SizedBox();
                 }
-                return contentData(context, max(index - 2, 0));
+                return contentData(context, index, boxSize);
               },
             ),
     );
@@ -236,20 +237,36 @@ class HomeScreen extends GetView<HomeController> {
     // if (!controller.checked && Platform)
   }
 
-  Widget contentData(BuildContext context, int index) {
+  Widget contentData(BuildContext context, int index, double boxSize) {
     // return (controller.blacklistedHomeSections.contains(element)
+    final listData = controller.getListData(index);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(15, 10, 0, 5),
           child: Text(
-            controller.lists[index].toUpperCase(),
+            controller.getModules(index)?.title ?? '',
             style: TextStyle(
               color: Theme.of(context).colorScheme.secondary,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
+          ),
+        ),
+        SizedBox(
+          height: boxSize + 15,
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            itemCount: listData.length,
+            itemBuilder: (context, index) {
+              return Container(
+                width: 200,
+                color: Colors.green,
+              );
+            },
           ),
         ),
       ],

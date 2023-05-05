@@ -4,6 +4,7 @@ import 'package:black_hole/api/api.dart';
 import 'package:black_hole/custom_widget.dart/textinput_dialog.dart';
 import 'package:black_hole/helpers/supabase.dart';
 import 'package:black_hole/model/home_page_model.dart';
+import 'package:black_hole/model/modules_model.dart';
 import 'package:black_hole/model/music_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -66,12 +67,11 @@ class HomeController extends GetxController {
   fetchHomePageData() async {
     final result = await SaavnAPI().fetchHomePageData();
     if (result != null) {
+      data.value = result;
       Hive.box('cache').put('homepage', jsonEncode(result.toJson()));
       lists.addAll(result.modules.map((e) => e.id).toList());
       lists.insert((lists.length / 2).round(), 'likedArtists');
     }
-
-    print("lists == $lists ===");
   }
 
   showTextInputDialogAction() async {
@@ -94,4 +94,17 @@ class HomeController extends GetxController {
   }
 
   goSearchAction() {}
+
+  ModulesModel? getModules(int index) {
+    return data.value.modules
+        .firstWhereOrNull((element) => element.id == lists[index])
+        ?.data;
+  }
+
+  List<MusicModel> getListData(int index) {
+    return data.value.page
+            .firstWhereOrNull((element) => element.id == lists[index])
+            ?.data ??
+        [];
+  }
 }
