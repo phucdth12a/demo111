@@ -1,0 +1,31 @@
+class AR {
+  static Map<String, String> get keys => {
+        "about": "حول",
+        "aboutLine1": "هذا مشروع مفتوح المصدر ويمكن ايجاده على",
+        "aboutLine2":
+            "إذا أعجبك عملي\nأظهر بعض الحب ♥ و قم بالإعجاب بالمشروع ⭐",
+        "addNew": "اضف جديد",
+        "addSomething": "اذهب واضف شيئ",
+        "addToPlaylist": "أضف إلى قائمة التشغيل",
+        "addToQueue": "أضف إلى قائمة الانتظار",
+        "addedBy": "مضاف من قبل",
+        "addedTo": "مضاف الى",
+        "addedToFav": "مضاف الى المفضلات",
+        "addedToPlaylists": "مضاف إلى قوائم التشغيل",
+        "addedToQueue": "مضاف إلى قائمة الانتظار",
+        "artist": "فنان",
+        "adjustSpeed": "عدل السرعه",
+        "album": "ألبوم",
+        "albumArtist": "فنان الألبوم",
+        "albums": "ألبومات",
+        "alphabetical": "أبجدي",
+        "alreadyExists": "موجود بالفعل",
+        "alreadyInQueue": "في قائمة الانتظار أصلاً",
+        "artists": "الفنانون",
+        "autoBack": "النسخ الاحتياطي التلقائي",
+        "autoBackSub": "نسخ احتياطي للبيانات تلقائيًا",
+        "autoplay": "تشغيل تلقائي",
+        "autoBackLocation": "موقع النسخ الاحتياطي التلقائي",
+        "autoplaySub": "إضافة الأغاني ذات الصلة تلقائيًا إلى قائمة الانتظار",
+      };
+}
