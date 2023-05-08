@@ -1,7 +1,12 @@
+import 'dart:io';
 import 'dart:math';
 import 'package:black_hole/custom_widget.dart/horizontal_albumlist_separated.dart';
+import 'package:black_hole/custom_widget.dart/on_hover.dart';
 import 'package:black_hole/helpers/extensions.dart';
+import 'package:black_hole/helpers/image_resolution_modifier.dart';
+import 'package:black_hole/model/music_model.dart';
 import 'package:black_hole/screens/home/home_controller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -261,15 +266,123 @@ class HomeScreen extends GetView<HomeController> {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             itemCount: listData.length,
-            itemBuilder: (context, index) {
-              return Container(
-                width: 200,
-                color: Colors.green,
-              );
-            },
+            itemBuilder: (context, index) =>
+                widgetItem(context, listData[index], boxSize),
           ),
         ),
       ],
+    );
+  }
+
+  Widget widgetItem(BuildContext context, MusicModel item, double boxSize) {
+    return GestureDetector(
+      onLongPress: () {},
+      onTap: () {},
+      child: SizedBox(
+        width: boxSize - 30,
+        child: HoverBox(
+          builder: (context, isHover, child) {
+            return Card(
+              color: isHover ? null : Colors.transparent,
+              elevation: 0,
+              margin: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                children: [
+                  Stack(
+                    children: [
+                      SizedBox.square(
+                        dimension: isHover ? boxSize - 25 : boxSize - 30,
+                        child: child,
+                      ),
+                      if (isHover &&
+                          ['song', 'radio_station'].contains(item.type))
+                        Positioned.fill(
+                          child: Container(
+                            margin: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(
+                                item.type == 'radio_station' ? 1000 : 10,
+                              ),
+                            ),
+                            child: Center(
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.black87,
+                                  borderRadius: BorderRadius.circular(10000),
+                                ),
+                                child: const Icon(
+                                  Icons.play_arrow_rounded,
+                                  size: 50,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      if (item.type == 'ratio_station' &&
+                          (Platform.isAndroid || Platform.isIOS || isHover))
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: controller.likedRadio.contains(item)
+                                ? const Icon(
+                                    Icons.favorite_rounded,
+                                    color: Colors.red,
+                                  )
+                                : const Icon(
+                                    Icons.favorite_border_rounded,
+                                  ),
+                            tooltip: controller.likedRadio.contains(item)
+                                ? 'unlike'.tr
+                                : 'like'.tr,
+                            onPressed: () => controller.toggleLikeRatio(item),
+                          ),
+                        ),
+                      if (item.type == 'song' || item.duration != null)
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [if (isHover) like],
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+          child: Card(
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                item.type == 'radio_stattion' ? 1000 : 10,
+              ),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              errorWidget: (context, url, error) => Image.asset(
+                'assets/cover.jpg',
+                fit: BoxFit.cover,
+              ),
+              imageUrl: getImageUrl(item.image),
+              placeholder: (context, url) => Image.asset(
+                ['playlist', 'album'].contains(item.type)
+                    ? 'assets/album.png'
+                    : item.type == 'artist'
+                        ? 'assets/artist.png'
+                        : 'assets/cover.jpg',
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

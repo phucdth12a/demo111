@@ -26,6 +26,7 @@ MusicModel _$MusicModelFromJson(Map<String, dynamic> json) => MusicModel(
           : MoreInfoModel.fromJson(json['more_info'] as Map<String, dynamic>?),
       tuJhoothiMainMakkaar: json['Tu Jhoothi Main Makkaar'] as String?,
       artist: json['artist'] as String?,
+      duration: json['duration'] as String?,
     );
 
 Map<String, dynamic> _$MusicModelToJson(MusicModel instance) =>
@@ -47,4 +48,5 @@ Map<String, dynamic> _$MusicModelToJson(MusicModel instance) =>
       'more_info': instance.moreInfo,
       'Tu Jhoothi Main Makkaar': instance.tuJhoothiMainMakkaar,
       'artist': instance.artist,
+      'duration': instance.duration,
     };

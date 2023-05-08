@@ -57,6 +57,9 @@ class MusicModel {
   @JsonKey(name: 'artist')
   String? artist;
 
+  @JsonKey(name: 'duration')
+  String? duration;
+
   MusicModel({
     this.id,
     this.title,
@@ -75,6 +78,7 @@ class MusicModel {
     this.moreInfo,
     this.tuJhoothiMainMakkaar,
     this.artist,
+    this.duration,
   });
 
   factory MusicModel.fromJson(Map<String, dynamic>? json) =>

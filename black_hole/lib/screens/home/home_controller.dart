@@ -17,6 +17,7 @@ class HomeController extends GetxController {
   var data = HomePageModel().obs;
 
   var recentList = <MusicModel>[].obs;
+  var likedRadio = <MusicModel>[].obs;
 
   var likedArtists =
       (Hive.box('cache').get('likedArtists', defaultValue: {}) as Map).obs;
@@ -106,5 +107,17 @@ class HomeController extends GetxController {
             .firstWhereOrNull((element) => element.id == lists[index])
             ?.data ??
         [];
+  }
+
+  toggleLikeRatio(MusicModel item) {
+    likedRadio.contains(item) ? likedRadio.remove(item) : likedRadio.add(item);
+    Hive.box('settings').put(
+      'likedRatio',
+      jsonEncode(
+        likedRadio.map(
+          (element) => element.toJson(),
+        ),
+      ),
+    );
   }
 }
