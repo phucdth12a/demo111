@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:black_hole/custom_widget.dart/horizontal_albumlist_separated.dart';
+import 'package:black_hole/custom_widget.dart/like_button.dart';
 import 'package:black_hole/custom_widget.dart/on_hover.dart';
+import 'package:black_hole/custom_widget.dart/song_title_trailing_menu.dart';
 import 'package:black_hole/helpers/extensions.dart';
 import 'package:black_hole/helpers/image_resolution_modifier.dart';
 import 'package:black_hole/model/music_model.dart';
@@ -276,8 +278,8 @@ class HomeScreen extends GetView<HomeController> {
 
   Widget widgetItem(BuildContext context, MusicModel item, double boxSize) {
     return GestureDetector(
-      onLongPress: () {},
-      onTap: () {},
+      onLongPress: () => showLongPress(context, item, boxSize),
+      onTap: () => controller.onTapItem(item),
       child: SizedBox(
         width: boxSize - 30,
         child: HoverBox(
@@ -324,23 +326,27 @@ class HomeScreen extends GetView<HomeController> {
                             ),
                           ),
                         ),
-                      if (item.type == 'ratio_station' &&
+                      if (item.type == 'radio_station' &&
                           (Platform.isAndroid || Platform.isIOS || isHover))
                         Align(
                           alignment: Alignment.topRight,
-                          child: IconButton(
-                            icon: controller.likedRadio.contains(item)
-                                ? const Icon(
-                                    Icons.favorite_rounded,
-                                    color: Colors.red,
-                                  )
-                                : const Icon(
-                                    Icons.favorite_border_rounded,
-                                  ),
-                            tooltip: controller.likedRadio.contains(item)
-                                ? 'unlike'.tr
-                                : 'like'.tr,
-                            onPressed: () => controller.toggleLikeRatio(item),
+                          child: Obx(
+                            () => IconButton(
+                              icon: controller.likedRadio
+                                      .map((e) => e.id)
+                                      .contains(item.id)
+                                  ? const Icon(
+                                      Icons.favorite_rounded,
+                                      color: Colors.red,
+                                    )
+                                  : const Icon(
+                                      Icons.favorite_border_rounded,
+                                    ),
+                              tooltip: controller.likedRadio.contains(item)
+                                  ? 'unlike'.tr
+                                  : 'like'.tr,
+                              onPressed: () => controller.toggleLikeRatio(item),
+                            ),
                           ),
                         ),
                       if (item.type == 'song' || item.duration != null)
@@ -348,10 +354,43 @@ class HomeScreen extends GetView<HomeController> {
                           alignment: Alignment.topRight,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: [if (isHover) like],
+                            children: [
+                              if (isHover) LikeButton(item: item),
+                              SongTitleTrailingMenu(data: item),
+                            ],
                           ),
                         ),
                     ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      children: [
+                        Text(
+                          item.title?.unescape() ?? '',
+                          textAlign: TextAlign.center,
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        if ((item.subtitle ?? '').isNotEmpty)
+                          Text(
+                            item.subtitle ??
+                                (item.moreInfo?.artistMap?.artists ?? [])
+                                    .map((e) => e.name)
+                                    .toList()
+                                    .join(', '),
+                            textAlign: TextAlign.center,
+                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 11,
+                              color:
+                                  Theme.of(context).textTheme.bodySmall!.color,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -361,7 +400,7 @@ class HomeScreen extends GetView<HomeController> {
             elevation: 5,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-                item.type == 'radio_stattion' ? 1000 : 10,
+                item.type == 'radio_station' ? 1000 : 10,
               ),
             ),
             clipBehavior: Clip.antiAlias,
@@ -383,6 +422,53 @@ class HomeScreen extends GetView<HomeController> {
           ),
         ),
       ),
+    );
+  }
+
+  showLongPress(BuildContext context, MusicModel item, double boxSize) {
+    Feedback.forLongPress(context);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return InteractiveViewer(
+          child: Stack(
+            children: [
+              GestureDetector(
+                onTap: () => Get.back(),
+              ),
+              AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                backgroundColor: Colors.transparent,
+                contentPadding: EdgeInsets.zero,
+                content: Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        item.type == 'radio_section' ? 1000 : 15),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) =>
+                        Image.asset('assets/cover.jpg'),
+                    imageUrl: getImageUrl(item.image),
+                    placeholder: (context, url) => Image.asset(
+                      ['playlist', 'album'].contains(item.type)
+                          ? 'assets/album.png'
+                          : item.type == 'artist'
+                              ? 'assets/artist.png'
+                              : 'assets/cover.jpg',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

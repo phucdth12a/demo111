@@ -108,6 +108,12 @@ class MoreInfoModel {
   @JsonKey(name: 'Tu Jhoothi Main Makkaar')
   String? tuJhoothiMainMakkaar;
 
+  @JsonKey(name: "featured_station_type")
+  String? featuredStationType;
+
+  @JsonKey(name: 'query')
+  String? query;
+
   MoreInfoModel({
     this.releaseDate,
     this.songCount,
@@ -142,6 +148,8 @@ class MoreInfoModel {
     this.webp,
     this.lyricsId,
     this.tuJhoothiMainMakkaar,
+    this.featuredStationType,
+    this.query,
   });
 
   factory MoreInfoModel.fromJson(Map<String, dynamic>? json) =>

@@ -64,6 +64,7 @@ class SaavnAPI {
       final myClient = IOClient(httpClient);
       return myClient.get(url, headers: headers);
     }
+    print("url == $url");
     return get(url, headers: headers).onError(
       (error, stackTrace) {
         return Response(
@@ -84,5 +85,40 @@ class SaavnAPI {
           json.decode(res.body) as Map<String, dynamic>);
     }
     return null;
+  }
+
+  Future<String?> createRadio(
+      {required List<String> names,
+      required String stationType,
+      String? language}) async {
+    String? params;
+    if (stationType == 'featured') {
+      params =
+          'name=${names[0]}&language=$language&${endpoints['featuredRadio']}';
+    }
+    if (stationType == 'artist') {
+      params = 'name${names[0]}&language=$language&${endpoints['artistRadio']}';
+    }
+    if (stationType == 'entity') {
+      params =
+          'entity_id=${names.map((e) => e).toList()}&entity_type=queue&${endpoints['entityRadio']}';
+    }
+    final res = await getResponse(params!);
+    if (res.statusCode == 200) {
+      final getMain = jsonDecode(res.body);
+      return (getMain as Map)['stationid'];
+    }
+    return null;
+  }
+
+  Future<List> getRadioSongs(
+      {required String stationId, int count = 20, int next = 1}) async {
+    if (count > 1) {
+      final String params =
+          'stationid=$stationId&k=$count&next=$next&${endpoints['radioSongs']}';
+      final res = await getResponse(params);
+      return [];
+    }
+    return [];
   }
 }

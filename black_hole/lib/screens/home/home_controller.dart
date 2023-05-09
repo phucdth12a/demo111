@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:black_hole/api/api.dart';
+import 'package:black_hole/custom_widget.dart/snackbar.dart';
 import 'package:black_hole/custom_widget.dart/textinput_dialog.dart';
 import 'package:black_hole/helpers/supabase.dart';
 import 'package:black_hole/model/home_page_model.dart';
@@ -51,6 +52,14 @@ class HomeController extends GetxController {
         Hive.box('cache').get('recentSongs', defaultValue: '');
     if (cacheRecentList.isNotEmpty) {
 // recentList.value = jsonDecode(cacheRecentList) as Map<String, dynamic>
+    }
+
+    String likedRadioData =
+        Hive.box('settings').get('likedRadio', defaultValue: '');
+    if (likedRadioData.isNotEmpty) {
+      likedRadio.value = (jsonDecode(likedRadioData) as List<dynamic>)
+          .map((e) => MusicModel.fromJson(e as Map<String, dynamic>))
+          .toList();
     }
 
     if (playlistNames.length < 3) {
@@ -112,12 +121,33 @@ class HomeController extends GetxController {
   toggleLikeRatio(MusicModel item) {
     likedRadio.contains(item) ? likedRadio.remove(item) : likedRadio.add(item);
     Hive.box('settings').put(
-      'likedRatio',
+      'likedRadio',
       jsonEncode(
-        likedRadio.map(
-          (element) => element.toJson(),
-        ),
+        likedRadio
+            .map(
+              (element) => element.toJson(),
+            )
+            .toList(),
       ),
     );
+  }
+
+  onTapItem(MusicModel item) async {
+    if (item.type == 'radio_station') {
+      ShowSnackBar().showSnackBar(
+        'connectingRadio'.tr,
+        duration: const Duration(seconds: 2),
+      );
+      final featuredStationType = item.moreInfo?.featuredStationType ?? '';
+      String? result = await SaavnAPI().createRadio(
+        names: featuredStationType == 'artist'
+            ? [item.moreInfo?.query ?? '']
+            : [item.id ?? ''],
+        stationType: featuredStationType,
+      );
+      if (result != null) {
+        SaavnAPI().getRadioSongs(stationId: result);
+      }
+    }
   }
 }

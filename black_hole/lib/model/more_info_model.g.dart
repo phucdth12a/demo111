@@ -45,6 +45,8 @@ MoreInfoModel _$MoreInfoModelFromJson(Map<String, dynamic> json) =>
       webp: json['webp'] as String?,
       lyricsId: json['lyrics_id'] as String?,
       tuJhoothiMainMakkaar: json['Tu Jhoothi Main Makkaar'] as String?,
+      featuredStationType: json['featured_station_type'] as String?,
+      query: json['query'] as String?,
     );
 
 Map<String, dynamic> _$MoreInfoModelToJson(MoreInfoModel instance) =>
@@ -82,4 +84,6 @@ Map<String, dynamic> _$MoreInfoModelToJson(MoreInfoModel instance) =>
       'webp': instance.webp,
       'lyrics_id': instance.lyricsId,
       'Tu Jhoothi Main Makkaar': instance.tuJhoothiMainMakkaar,
+      'featured_station_type': instance.featuredStationType,
+      'query': instance.query,
     };

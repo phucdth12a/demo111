@@ -27,6 +27,19 @@ MusicModel _$MusicModelFromJson(Map<String, dynamic> json) => MusicModel(
       tuJhoothiMainMakkaar: json['Tu Jhoothi Main Makkaar'] as String?,
       artist: json['artist'] as String?,
       duration: json['duration'] as String?,
+      dateAdded: json['dateAdded'] == null
+          ? null
+          : DateTime.parse(json['dateAdded'] as String),
+      album: json['album'] as String?,
+      url: json['url'] as String?,
+      lowUrl: json['lowUrl'] as String?,
+      highUrl: json['highUrl'] as String?,
+      url320kbps: json['320kbps'] as String?,
+      quality: json['quality'] as String?,
+      hasLyrics: json['has_lyrics'] as String?,
+      releaseDate: json['release_date'] as String?,
+      albumId: json['album_id'] as String?,
+      expireAt: json['expire_at'] as String?,
     );
 
 Map<String, dynamic> _$MusicModelToJson(MusicModel instance) =>
@@ -49,4 +62,15 @@ Map<String, dynamic> _$MusicModelToJson(MusicModel instance) =>
       'Tu Jhoothi Main Makkaar': instance.tuJhoothiMainMakkaar,
       'artist': instance.artist,
       'duration': instance.duration,
+      'dateAdded': instance.dateAdded?.toIso8601String(),
+      'album': instance.album,
+      'url': instance.url,
+      'lowUrl': instance.lowUrl,
+      'highUrl': instance.highUrl,
+      '320kbps': instance.url320kbps,
+      'quality': instance.quality,
+      'has_lyrics': instance.hasLyrics,
+      'release_date': instance.releaseDate,
+      'album_id': instance.albumId,
+      'expire_at': instance.expireAt,
     };

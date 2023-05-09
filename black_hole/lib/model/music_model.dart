@@ -60,6 +60,45 @@ class MusicModel {
   @JsonKey(name: 'duration')
   String? duration;
 
+  @JsonKey(name: 'dateAdded')
+  DateTime? dateAdded;
+
+  @JsonKey(name: 'album')
+  String? album;
+
+  @JsonKey(name: 'url')
+  String? url;
+
+  @JsonKey(name: 'lowUrl')
+  String? lowUrl;
+
+  @JsonKey(name: 'highUrl')
+  String? highUrl;
+
+  @JsonKey(name: '320kbps')
+  String? url320kbps;
+
+  @JsonKey(name: 'quality')
+  String? quality;
+
+  @JsonKey(name: 'has_lyrics')
+  String? hasLyrics;
+
+  @JsonKey(name: 'release_date')
+  String? releaseDate;
+
+  @JsonKey(name: 'album_id')
+  String? albumId;
+
+  @JsonKey(name: 'expire_at')
+  String? expireAt;
+
+  @JsonKey(name: 'genre')
+  String? genre;
+
+  @JsonKey(name: 'path')
+  String? path;
+
   MusicModel({
     this.id,
     this.title,
@@ -79,6 +118,19 @@ class MusicModel {
     this.tuJhoothiMainMakkaar,
     this.artist,
     this.duration,
+    this.dateAdded,
+    this.album,
+    this.url,
+    this.lowUrl,
+    this.highUrl,
+    this.url320kbps,
+    this.quality,
+    this.hasLyrics,
+    this.releaseDate,
+    this.albumId,
+    this.expireAt,
+    this.genre,
+    this.path,
   });
 
   factory MusicModel.fromJson(Map<String, dynamic>? json) =>
