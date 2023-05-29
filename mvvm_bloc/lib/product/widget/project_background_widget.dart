@@ -28,7 +28,13 @@ class BackGround extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 child: Column(
                   children: [
-                    Assets.icons.trendyolIconWhite.svg(),
+                    Assets.icons.trendyolIconWhite.svg(
+                      height: 35,
+                      colorFilter: const ColorFilter.mode(
+                        ColorName.facebookColor,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                     Text(
                       'Every thing you are looking for...',
                       style: context.textTheme.bodyMedium!.copyWith(

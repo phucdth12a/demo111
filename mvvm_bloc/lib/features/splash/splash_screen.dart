@@ -31,7 +31,13 @@ class _SplashScreenState extends State<SplashScreen> {
         ]),
       ),
       child: Center(
-        child: Assets.icons.trendyolIconWhite.svg(),
+        child: Assets.icons.trendyolIconWhite.svg(
+          height: 35,
+          colorFilter: const ColorFilter.mode(
+            ColorName.facebookColor,
+            BlendMode.srcIn,
+          ),
+        ),
       ),
     );
   }

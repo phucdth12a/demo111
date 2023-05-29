@@ -17,5 +17,6 @@ class AppRouter extends $AppRouter {
   List<AutoRoute> get routes => [
         AutoRoute(page: SplashScreen.page, path: '/splash', initial: true),
         AutoRoute(page: LoginScreen.page, path: '/login'),
+        AutoRoute(page: RegisterScreen.page, path: '/register'),
       ];
 }
