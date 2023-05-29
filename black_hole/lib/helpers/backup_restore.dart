@@ -4,7 +4,6 @@ import 'package:black_hole/custom_widget.dart/snackbar.dart';
 import 'package:black_hole/helpers/picker.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';

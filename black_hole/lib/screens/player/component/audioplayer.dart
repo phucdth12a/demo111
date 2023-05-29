@@ -3,6 +3,20 @@ import 'package:black_hole/model/music_model.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
+class PlayScreen extends StatefulWidget {
+  const PlayScreen({super.key});
+
+  @override
+  State<PlayScreen> createState() => _PlayScreenState();
+}
+
+class _PlayScreenState extends State<PlayScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
 class MediaState {
   final MusicModel? item;
   final Duration position;

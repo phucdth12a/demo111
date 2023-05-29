@@ -1,4 +1,5 @@
 import 'package:black_hole/custom_widget.dart/gradient_containers.dart';
+import 'package:black_hole/gen/assets.gen.dart';
 import 'package:black_hole/helpers/countrycodes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,8 +18,7 @@ class PrefScreen extends GetView<PrefController> {
             Positioned(
               left: Get.width / 1.85,
               child: SafeArea(
-                child: Image.asset(
-                  'assets/icon-white-trans.png',
+                child: Assets.images.iconWhiteTrans.image(
                   width: Get.width,
                   height: Get.width,
                 ),

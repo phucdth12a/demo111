@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:audio_service/audio_service.dart';
 import 'package:black_hole/helpers/config.dart';
 import 'package:black_hole/helpers/countrycodes.dart';
 import 'package:black_hole/routes/routes.dart';
+import 'package:black_hole/screens/player/component/audioplayer.dart';
+import 'package:black_hole/services/audio_service.dart';
 import 'package:black_hole/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +26,7 @@ Future<void> main() async {
   Paint.enableDithering = true;
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    await Hive.initFlutter('BlackHold');
+    await Hive.initFlutter('BlackHole');
   } else {
     await Hive.initFlutter();
   }
@@ -39,32 +42,28 @@ Future<void> main() async {
   }
 
   await startServices();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 Future<void> setOptimalDisplayMode() async {
   await FlutterDisplayMode.setHighRefreshRate();
-  // final List<DisplayMode> supported = await FlutterDisplayMode.supported;
-  // final DisplayMode active = await FlutterDisplayMode.active;
-
-  // final List<DisplayMode> sameResolution = supported
-  //     .where((element) =>
-  //         element.width == active.width && element.height == active.height)
-  //     .toList()
-  //   ..sort(
-  //     (a, b) => b.refreshRate.compareTo(a.refreshRate),
-  //   );
-
-  // final DisplayMode mostOptimalMode =
-  //     sameResolution.isNotEmpty ? sameResolution.first : active;
-
-  // await FlutterDisplayMode.setPreferredMode(mostOptimalMode);
 }
 
 Future<void> startServices() async {
   await initializeLogging();
-  // final AudioPlayerH
+  final AudioPlayerHandler audioHandler = await AudioService.init(
+    builder: () => AudioPlayerHandlerImpl(),
+    config: AudioServiceConfig(
+      androidNotificationChannelId: 'com.shadow.blackhole.channel.audio',
+      androidNotificationChannelName: 'BlackHole',
+      androidNotificationIcon: 'drawable/ic_stat_music_note',
+      androidShowNotificationBadge: true,
+      androidStopForegroundOnPause: false,
+      notificationColor: Colors.grey[900],
+    ),
+  );
 
+  GetIt.I.registerSingleton<AudioPlayerHandler>(audioHandler);
   GetIt.I.registerSingleton<MyTheme>(MyTheme());
 }
 
@@ -224,16 +223,11 @@ class _MyAppState extends State<MyApp> {
       ),
       translations: Localization(),
       locale: _locale,
-      localizationsDelegates: [
-        // AppLocalizations.delete,
-        // GlobalMaterialLocalizations.delegate,
-        // GlobalWidgetsLocalizations.delegate,
-        // GlobalCupertinoLocalizations.delegate,
-      ],
       navigatorKey: navigatorKey,
-      // onGenerateRoute: (settings) {
-      //   if (settings.name == '/player') {}
-      // },
+      onGenerateRoute: (settings) {
+        print("settings.name == ${settings.name}");
+        if (settings.name == '/player') {}
+      },
       initialRoute: Hive.box('settings').get('userId') != null
           ? Routes.home
           : Routes.login,

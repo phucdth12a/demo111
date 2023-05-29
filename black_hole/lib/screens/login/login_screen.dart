@@ -1,4 +1,5 @@
 import 'package:black_hole/custom_widget.dart/gradient_containers.dart';
+import 'package:black_hole/gen/assets.gen.dart';
 import 'package:black_hole/screens/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,7 @@ class LoginScreen extends GetView<LoginController> {
               child: SizedBox(
                 width: Get.width,
                 height: Get.width,
-                child: Image.asset('assets/icon-white-trans.png'),
+                child: Assets.images.iconWhiteTrans.image(),
               ),
             ),
             const GradientContainer(opacity: true),

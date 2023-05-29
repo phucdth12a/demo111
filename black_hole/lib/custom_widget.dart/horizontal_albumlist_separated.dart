@@ -1,11 +1,11 @@
 import 'package:black_hole/custom_widget.dart/custom_physics.dart';
 import 'package:black_hole/custom_widget.dart/song_title_trailing_menu.dart';
+import 'package:black_hole/gen/assets.gen.dart';
 import 'package:black_hole/helpers/image_resolution_modifier.dart';
 import 'package:black_hole/model/music_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class HorizontalAlbumsListSeparated extends StatelessWidget {
   const HorizontalAlbumsListSeparated({
@@ -85,17 +85,15 @@ class HorizontalAlbumsListSeparated extends StatelessWidget {
                           clipBehavior: Clip.antiAlias,
                           child: CachedNetworkImage(
                             fit: BoxFit.cover,
-                            errorWidget: (context, url, error) => Image.asset(
-                              'assets/cover.jpg',
-                              fit: BoxFit.cover,
-                            ),
+                            errorWidget: (context, url, error) =>
+                                Assets.images.cover.image(fit: BoxFit.cover),
                             imageUrl: getImageUrl(item.image),
                             placeholder: (context, url) => Image.asset(
                               (item.type == 'playlist' || item.type == 'album')
-                                  ? 'assets/album.png'
+                                  ? Assets.images.album.path
                                   : item.type == 'artist'
-                                      ? 'assets/artist.png'
-                                      : 'assets/cover.jpg',
+                                      ? Assets.images.artist.path
+                                      : Assets.images.cover.path,
                             ),
                           ),
                         ),

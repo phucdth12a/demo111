@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:black_hole/custom_widget.dart/custom_physics.dart';
 import 'package:black_hole/custom_widget.dart/gradient_containers.dart';
+import 'package:black_hole/gen/assets.gen.dart';
 import 'package:black_hole/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -73,8 +74,8 @@ class RootScreen extends GetView<RootController> {
                           blendMode: BlendMode.dstIn,
                           child: Image.asset(
                             Theme.of(context).brightness == Brightness.dark
-                                ? 'assets/header-dark.jpg'
-                                : 'assets/header.jpg',
+                                ? Assets.images.headerDark.path
+                                : Assets.images.header.path,
                             fit: BoxFit.cover,
                             alignment: Alignment.topCenter,
                           ),

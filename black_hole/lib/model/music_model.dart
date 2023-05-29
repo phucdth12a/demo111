@@ -99,6 +99,9 @@ class MusicModel {
   @JsonKey(name: 'path')
   String? path;
 
+  @JsonKey(name: 'secondImage')
+  String? secondImage;
+
   MusicModel({
     this.id,
     this.title,
@@ -131,6 +134,7 @@ class MusicModel {
     this.expireAt,
     this.genre,
     this.path,
+    this.secondImage,
   });
 
   factory MusicModel.fromJson(Map<String, dynamic>? json) =>

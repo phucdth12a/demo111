@@ -40,6 +40,9 @@ MusicModel _$MusicModelFromJson(Map<String, dynamic> json) => MusicModel(
       releaseDate: json['release_date'] as String?,
       albumId: json['album_id'] as String?,
       expireAt: json['expire_at'] as String?,
+      genre: json['genre'] as String?,
+      path: json['path'] as String?,
+      secondImage: json['secondImage'] as String?,
     );
 
 Map<String, dynamic> _$MusicModelToJson(MusicModel instance) =>
@@ -73,4 +76,7 @@ Map<String, dynamic> _$MusicModelToJson(MusicModel instance) =>
       'release_date': instance.releaseDate,
       'album_id': instance.albumId,
       'expire_at': instance.expireAt,
+      'genre': instance.genre,
+      'path': instance.path,
+      'secondImage': instance.secondImage,
     };

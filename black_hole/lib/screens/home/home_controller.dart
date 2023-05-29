@@ -7,6 +7,8 @@ import 'package:black_hole/helpers/supabase.dart';
 import 'package:black_hole/model/home_page_model.dart';
 import 'package:black_hole/model/modules_model.dart';
 import 'package:black_hole/model/music_model.dart';
+import 'package:black_hole/routes/routes.dart';
+import 'package:black_hole/services/player_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -132,7 +134,7 @@ class HomeController extends GetxController {
     );
   }
 
-  onTapItem(MusicModel item) async {
+  onTapItem(MusicModel item, List<MusicModel> list) async {
     if (item.type == 'radio_station') {
       ShowSnackBar().showSnackBar(
         'connectingRadio'.tr,
@@ -147,6 +149,20 @@ class HomeController extends GetxController {
       );
       if (result != null) {
         SaavnAPI().getRadioSongs(stationId: result);
+      }
+    } else {
+      print("item.type: == ${item.type}");
+      final currentSongList =
+          list.where((element) => element.type == 'song').toList();
+      if (item.type == 'song') {
+        PlayerInvoke.init(
+          songList: currentSongList,
+          index: currentSongList.indexWhere((element) => element.id == item.id),
+          isOffline: false,
+        );
+        Get.toNamed(Routes.player);
+      } else {
+        Get.toNamed(Routes.songlist, arguments: item);
       }
     }
   }

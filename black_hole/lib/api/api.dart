@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:black_hole/model/home_page_model.dart';
+import 'package:black_hole/model/music_model.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
-import 'package:logging/logging.dart';
 
 class SaavnAPI {
   List preferredLanguages = Hive.box('settings')
@@ -87,6 +87,31 @@ class SaavnAPI {
     return null;
   }
 
+  Future<MusicModel> getSongFromToken(String token, String type,
+      {int n = 10, int p = 1}) async {
+    return MusicModel();
+    if (n == -1) {
+      final String params =
+          'token=$token&type=$type&n=5&p=$p&${endpoints['fromToken']}';
+      final res = await getResponse(params);
+      if (res.statusCode == 200) {
+        // final
+      }
+    }
+  }
+
+  Future<List<MusicModel>> getReco(String pid) async {
+    final String params = '${endpoints['getReco']}&pid=$pid';
+    final res = await getResponse(params);
+    if (res.statusCode == 200) {
+      final getMain = jsonDecode(res.body) as List;
+      return getMain
+          .map((e) => MusicModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+    }
+    return [];
+  }
+
   Future<String?> createRadio(
       {required List<String> names,
       required String stationType,
@@ -119,6 +144,22 @@ class SaavnAPI {
       final res = await getResponse(params);
       return [];
     }
+    return [];
+  }
+
+  Future<List<MusicModel>> fetchAlbumSongs(String albumId) async {
+    final String params = '${endpoints['albumDetails']}&cc=in&albumid=$albumId';
+    final res = await getResponse(params);
+    return [];
+    // if (res.statusCode == 200) {
+    //   final getMain = jso
+    // }
+  }
+
+  Future<List<MusicModel>> fetchPlaylistSongs(String playlistId) async {
+    final String params =
+        '${endpoints['playlistDetails']}&cc=in&listid=$playlistId';
+    final res = await getResponse(params);
     return [];
   }
 }

@@ -4,6 +4,7 @@ import 'package:black_hole/custom_widget.dart/horizontal_albumlist_separated.dar
 import 'package:black_hole/custom_widget.dart/like_button.dart';
 import 'package:black_hole/custom_widget.dart/on_hover.dart';
 import 'package:black_hole/custom_widget.dart/song_title_trailing_menu.dart';
+import 'package:black_hole/gen/assets.gen.dart';
 import 'package:black_hole/helpers/extensions.dart';
 import 'package:black_hole/helpers/image_resolution_modifier.dart';
 import 'package:black_hole/model/music_model.dart';
@@ -269,17 +270,18 @@ class HomeScreen extends GetView<HomeController> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             itemCount: listData.length,
             itemBuilder: (context, index) =>
-                widgetItem(context, listData[index], boxSize),
+                widgetItem(context, listData[index], boxSize, listData),
           ),
         ),
       ],
     );
   }
 
-  Widget widgetItem(BuildContext context, MusicModel item, double boxSize) {
+  Widget widgetItem(BuildContext context, MusicModel item, double boxSize,
+      List<MusicModel> list) {
     return GestureDetector(
       onLongPress: () => showLongPress(context, item, boxSize),
-      onTap: () => controller.onTapItem(item),
+      onTap: () => controller.onTapItem(item, list),
       child: SizedBox(
         width: boxSize - 30,
         child: HoverBox(
@@ -406,17 +408,15 @@ class HomeScreen extends GetView<HomeController> {
             clipBehavior: Clip.antiAlias,
             child: CachedNetworkImage(
               fit: BoxFit.cover,
-              errorWidget: (context, url, error) => Image.asset(
-                'assets/cover.jpg',
-                fit: BoxFit.cover,
-              ),
+              errorWidget: (context, url, error) =>
+                  Assets.images.cover.image(fit: BoxFit.cover),
               imageUrl: getImageUrl(item.image),
               placeholder: (context, url) => Image.asset(
                 ['playlist', 'album'].contains(item.type)
-                    ? 'assets/album.png'
+                    ? Assets.images.album.path
                     : item.type == 'artist'
-                        ? 'assets/artist.png'
-                        : 'assets/cover.jpg',
+                        ? Assets.images.artist.path
+                        : Assets.images.cover.path,
               ),
             ),
           ),
@@ -452,14 +452,14 @@ class HomeScreen extends GetView<HomeController> {
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
                     errorWidget: (context, url, error) =>
-                        Image.asset('assets/cover.jpg'),
+                        Assets.images.cover.image(),
                     imageUrl: getImageUrl(item.image),
                     placeholder: (context, url) => Image.asset(
                       ['playlist', 'album'].contains(item.type)
-                          ? 'assets/album.png'
+                          ? Assets.images.album.path
                           : item.type == 'artist'
-                              ? 'assets/artist.png'
-                              : 'assets/cover.jpg',
+                              ? Assets.images.artist.path
+                              : Assets.images.cover.path,
                       fit: BoxFit.cover,
                     ),
                   ),

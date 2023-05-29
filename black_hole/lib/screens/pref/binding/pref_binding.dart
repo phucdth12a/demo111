@@ -2,9 +2,9 @@ import 'package:get/get.dart';
 
 import '../pref_controller.dart';
 
-class PrefBiding extends Bindings {
+class PrefBiding extends BindingsInterface {
   @override
   void dependencies() {
-    Get.lazyPut(() => PrefController());
+    Get.put(PrefController());
   }
 }
