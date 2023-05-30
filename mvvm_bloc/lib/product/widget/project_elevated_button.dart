@@ -4,13 +4,9 @@ import 'package:mvvm_bloc/gen/colors.gen.dart';
 import 'package:mvvm_bloc/product/constants/project_padding.dart';
 
 class ProjectElevantedButton extends StatelessWidget {
-  ProjectElevantedButton({
-    this.name,
-    this.onPressed,
-    super.key,
-  });
+  const ProjectElevantedButton({super.key, this.onPressed, this.name});
 
-  String? name;
+  final String? name;
   final Future<void> Function()? onPressed;
 
   @override

@@ -3,14 +3,14 @@ import 'package:kartal/kartal.dart';
 import 'package:mvvm_bloc/gen/colors.gen.dart';
 
 class SmallTextButton extends StatelessWidget {
-  SmallTextButton({
+  const SmallTextButton({
     super.key,
     this.text,
     required this.onTap,
   });
 
-  String? text;
-  void Function()? onTap;
+  final String? text;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
